@@ -93,7 +93,7 @@ Page({
 
     getWXCustomer() {
         wx.setClipboardData({
-            data: '18331092918',
+            data: '18969670186',
             success: () => {
                 wx.showToast({
                     title: '复制微信成功',
