@@ -163,45 +163,37 @@ Page({
       _id
     } = item;
     
+    // 获取当前时间作为更新时间
+    const updateTime = new Date();
+    
     // 先更新本地数据
     db.collection('order').doc(_id).update({
       data: {
         receivePerson: this.data.openid,
         state: '已帮助',
+        updateTime: db.serverDate(),
+        notifyUser: true,
+        hasRead: false
       },
       success: (res) => {
-        // 然后调用云函数记录状态变更
-        wx.cloud.callFunction({
-          name: 'updateOrderStatus',
-          data: {
-            orderId: _id,
-            newStatus: '已帮助',
-            remark: '跑腿员接单'
-          },
-          success: (res) => {
-            console.log('状态更新成功', res);
-            if (this.data.tabNow === 0) {
-              this.onLoad();
-            } else {
-              this.getRewardOrder();
-            }
-            wx.hideLoading();
-            wx.showToast({
-              title: '接单成功',
-              icon: 'success'
-            });
-          },
-          fail: (err) => {
-            console.error('状态更新失败', err);
-            wx.hideLoading();
-            wx.showToast({
-              title: '接单成功，但状态记录失败',
-              icon: 'none'
-            });
-          }
+        // 尝试记录状态变更历史
+        this.recordStatusChange(_id, '待帮助', '已帮助', '跑腿员接单');
+        
+        // 无论状态记录是否成功，都刷新订单列表
+        if (this.data.tabNow === 0) {
+          this.onLoad();
+        } else {
+          this.getRewardOrder();
+        }
+        
+        wx.hideLoading();
+        wx.showToast({
+          title: '接单成功',
+          icon: 'success'
         });
       },
       fail: (err) => {
+        console.error('接单失败', err);
         wx.hideLoading();
         wx.showToast({
           title: '接单失败',
@@ -209,6 +201,63 @@ Page({
         });
       }
     })
+  },
+  
+  // 记录状态变更历史
+  recordStatusChange(orderId, oldStatus, newStatus, remark) {
+    // 尝试调用云函数
+    wx.cloud.callFunction({
+      name: 'updateOrderStatus',
+      data: {
+        orderId,
+        newStatus,
+        remark
+      },
+      success: (res) => {
+        console.log('状态更新成功', res);
+      },
+      fail: (err) => {
+        console.error('状态更新失败', err);
+        
+        // 如果云函数调用失败，尝试直接写入状态历史记录
+        this.createStatusHistoryRecord(orderId, oldStatus, newStatus, remark);
+      }
+    });
+  },
+  
+  // 直接创建状态历史记录（云函数调用失败的备用方案）
+  createStatusHistoryRecord(orderId, oldStatus, newStatus, remark) {
+    // 检查order_status_history集合是否存在
+    db.collection('order_status_history').count()
+      .then(() => {
+        // 集合存在，直接添加记录
+        return this.addStatusHistoryRecord(orderId, oldStatus, newStatus, remark);
+      })
+      .catch(err => {
+        if (err.errCode === -1) {
+          // 集合不存在，尝试创建集合
+          console.log('状态历史集合不存在，将在下次云函数部署后自动创建');
+        }
+        console.error('检查状态历史集合失败', err);
+      });
+  },
+  
+  // 添加状态历史记录
+  addStatusHistoryRecord(orderId, oldStatus, newStatus, remark) {
+    db.collection('order_status_history').add({
+      data: {
+        orderId,
+        oldStatus,
+        newStatus,
+        remark: remark || '',
+        operatorId: this.data.openid,
+        createTime: db.serverDate()
+      }
+    }).then(res => {
+      console.log('状态历史记录添加成功', res);
+    }).catch(err => {
+      console.error('状态历史记录添加失败', err);
+    });
   },
 
   toFinish(e) {
@@ -226,38 +275,26 @@ Page({
     db.collection('order').doc(_id).update({
       data: {
         state: '已完成',
-        completeTime: db.serverDate()
+        completeTime: db.serverDate(),
+        updateTime: db.serverDate(),
+        notifyUser: true,
+        hasRead: false
       },
       success: (res) => {
-        // 然后调用云函数记录状态变更
-        wx.cloud.callFunction({
-          name: 'updateOrderStatus',
-          data: {
-            orderId: _id,
-            newStatus: '已完成',
-            remark: '订单已完成'
-          },
-          success: (res) => {
-            console.log('状态更新成功', res);
-            this.getMyOrder();
-            wx.hideLoading();
-            wx.showToast({
-              title: '订单已完成',
-              icon: 'success'
-            });
-          },
-          fail: (err) => {
-            console.error('状态更新失败', err);
-            this.getMyOrder();
-            wx.hideLoading();
-            wx.showToast({
-              title: '订单已完成，但状态记录失败',
-              icon: 'none'
-            });
-          }
+        // 尝试记录状态变更历史
+        this.recordStatusChange(_id, '已帮助', '已完成', '订单已完成');
+        
+        // 无论状态记录是否成功，都刷新订单列表
+        this.getMyOrder();
+        
+        wx.hideLoading();
+        wx.showToast({
+          title: '订单已完成',
+          icon: 'success'
         });
       },
       fail: (err) => {
+        console.error('完成订单失败', err);
         wx.hideLoading();
         wx.showToast({
           title: '操作失败',

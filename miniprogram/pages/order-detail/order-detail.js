@@ -51,37 +51,9 @@ Page({
             loading: false
           });
           
-          // 然后尝试获取状态历史
-          wx.cloud.callFunction({
-            name: 'getOrderStatusHistory',
-            data: {
-              orderId: orderId
-            },
-            success: res => {
-              console.log('获取订单详情成功', res);
-              if (res.result && res.result.success) {
-                // 格式化时间
-                if (res.result.history && res.result.history.length > 0) {
-                  const statusHistory = res.result.history.map(item => {
-                    return {
-                      ...item,
-                      createTimeFormat: new Date(item.createTime).toLocaleString()
-                    };
-                  });
-                  
-                  this.setData({
-                    statusHistory
-                  });
-                }
-              }
-              wx.hideLoading();
-            },
-            fail: err => {
-              console.error('获取订单状态历史失败', err);
-              // 即使获取历史失败，我们已经有了基本订单信息，所以不显示错误提示
-              wx.hideLoading();
-            }
-          });
+          // 从本地存储获取状态历史
+          this.updateLocalStatusHistory(orderId);
+          wx.hideLoading();
         } else {
           wx.showToast({
             title: '订单不存在',
@@ -174,59 +146,121 @@ Page({
       title: '处理中',
     });
     
-    const updateData = {
-      state: newStatus
-    };
-    
-    if (isReceive) {
-      updateData.receivePerson = wx.getStorageSync('openid');
-    }
-    
-    if (newStatus === '已完成') {
-      updateData.completeTime = db.serverDate();
-    }
-    
-    // 更新订单状态
-    db.collection('order').doc(orderId).update({
-      data: updateData,
-      success: () => {
-        // 调用云函数记录状态变更
-        wx.cloud.callFunction({
-          name: 'updateOrderStatus',
-          data: {
-            orderId: orderId,
-            newStatus: newStatus,
-            remark: remark
-          },
-          success: () => {
-            wx.hideLoading();
-            wx.showToast({
-              title: newStatus === '已帮助' ? '接单成功' : '订单已完成',
-              icon: 'success'
-            });
-            // 重新加载订单详情
-            setTimeout(() => {
-              this.getOrderDetail(this.data.orderId);
-            }, 1500);
-          },
-          fail: err => {
-            console.error('状态更新失败', err);
-            wx.hideLoading();
-            wx.showToast({
-              title: '操作失败',
-              icon: 'none'
-            });
-          }
-        });
-      },
-      fail: err => {
-        console.error('更新订单失败', err);
-        wx.hideLoading();
-        wx.showToast({
-          title: '操作失败',
-          icon: 'none'
-        });
+    // 获取当前订单信息以获取旧状态
+    db.collection('order').doc(orderId).get().then(res => {
+      const oldStatus = res.data.state;
+      
+      const updateData = {
+        state: newStatus,
+        updateTime: db.serverDate(),
+        notifyUser: newStatus === '已完成',
+        hasRead: false
+      };
+      
+      if (isReceive) {
+        updateData.receivePerson = wx.getStorageSync('openid');
       }
+      
+      if (newStatus === '已完成') {
+        updateData.completeTime = db.serverDate();
+      }
+      
+      // 更新订单状态
+      db.collection('order').doc(orderId).update({
+        data: updateData,
+        success: () => {
+          // 尝试记录状态变更历史
+          this.recordStatusChange(orderId, oldStatus, newStatus, remark);
+          
+          wx.hideLoading();
+          wx.showToast({
+            title: newStatus === '已帮助' ? '接单成功' : '订单已完成',
+            icon: 'success'
+          });
+          
+          // 重新加载订单详情
+          setTimeout(() => {
+            this.getOrderDetail(this.data.orderId);
+          }, 1500);
+        },
+        fail: err => {
+          console.error('更新订单失败', err);
+          wx.hideLoading();
+          wx.showToast({
+            title: '操作失败',
+            icon: 'none'
+          });
+        }
+      });
+    }).catch(err => {
+      console.error('获取订单信息失败', err);
+      wx.hideLoading();
+      wx.showToast({
+        title: '操作失败',
+        icon: 'none'
+      });
     });
+  },
+  
+  // 记录状态变更历史
+  recordStatusChange: function(orderId, oldStatus, newStatus, remark) {
+    // 直接使用本地存储记录状态变更，不再尝试调用云函数
+    this.saveStatusHistoryToLocal(orderId, oldStatus, newStatus, remark);
+  },
+  
+  // 将状态历史保存到本地存储
+  saveStatusHistoryToLocal: function(orderId, oldStatus, newStatus, remark) {
+    try {
+      // 获取当前订单的状态历史记录
+      let statusHistory = wx.getStorageSync('order_status_history') || {};
+      
+      // 如果该订单没有历史记录，创建一个空数组
+      if (!statusHistory[orderId]) {
+        statusHistory[orderId] = [];
+      }
+      
+      // 添加新的状态记录
+      statusHistory[orderId].push({
+        orderId,
+        oldStatus,
+        newStatus,
+        remark: remark || '',
+        operatorId: this.data.openid,
+        createTime: new Date().toISOString()
+      });
+      
+      // 保存回本地存储
+      wx.setStorageSync('order_status_history', statusHistory);
+      console.log('状态历史记录已保存到本地存储');
+      
+      // 更新当前页面的状态历史显示
+      this.updateLocalStatusHistory(orderId);
+    } catch (err) {
+      console.error('保存状态历史记录失败', err);
+    }
+  },
+  
+  // 更新本地状态历史显示
+  updateLocalStatusHistory: function(orderId) {
+    try {
+      // 从本地存储获取状态历史
+      const allHistory = wx.getStorageSync('order_status_history') || {};
+      const orderHistory = allHistory[orderId] || [];
+      
+      // 格式化时间
+      const statusHistory = orderHistory.map(item => {
+        return {
+          ...item,
+          createTimeFormat: new Date(item.createTime).toLocaleString()
+        };
+      });
+      
+      // 更新页面数据
+      this.setData({
+        statusHistory
+      });
+    } catch (err) {
+      console.error('更新状态历史显示失败', err);
+    }
   }
 });
