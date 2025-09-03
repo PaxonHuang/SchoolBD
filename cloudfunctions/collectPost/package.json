@@ -1,0 +1,12 @@
+{
+  "name": "collectPost",
+  "config": {
+    "timeout": 30,
+    "memorySize": 256
+  },
+  "permissions": {
+    "openapi": [
+      "wxacode.get"
+    ]
+  }
+}

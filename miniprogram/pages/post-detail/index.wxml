@@ -1,0 +1,144 @@
+<!-- pages/post-detail/index.wxml -->
+<import src="../../templates/forum-templates.wxml" />
+
+<view class="detail-container">
+  <!-- 顶部导航栏 -->
+  <view class="detail-header">
+    <view class="back-btn" bindtap="navigateBack">
+      <text class="back-icon">←</text>
+    </view>
+    <view class="header-title">帖子详情</view>
+    <button class="share-btn" open-type="share">
+      <text class="share-icon">🔗</text>
+    </button>
+  </view>
+  
+  <!-- 加载中 -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <view class="weui-loading"></view>
+    <view class="loading-text">加载中...</view>
+  </view>
+  
+  <!-- 帖子详情 -->
+  <block wx:elif="{{postDetail}}">
+    <scroll-view 
+      class="detail-scroll" 
+      scroll-y="true" 
+      enable-back-to-top="true"
+      bindscrolltolower="onReachBottom">
+      
+      <!-- 帖子内容区 -->
+      <view class="post-detail">
+        <!-- 用户信息区 -->
+        <view class="detail-user-info">
+          <image class="detail-avatar" src="{{postDetail.author.avatarUrl || '/images/default-avatar.png'}}" mode="aspectFill"></image>
+          <view class="detail-user-name-time">
+            <view class="detail-user-name">{{postDetail.author.nickName || '匿名用户'}}</view>
+            <view class="detail-post-time">{{postDetail.createTime}}</view>
+          </view>
+          <view class="post-category" wx:if="{{postDetail.category}}">
+            <text class="category-text">{{postDetail.categoryName || postDetail.category}}</text>
+          </view>
+        </view>
+        
+        <!-- 帖子内容区 -->
+        <view class="detail-content">
+          <view class="detail-title">{{postDetail.title}}</view>
+          <view class="detail-text">{{postDetail.content}}</view>
+          
+          <!-- 图片区域 -->
+          <view class="detail-images" wx:if="{{postDetail.images && postDetail.images.length > 0}}">
+            <block wx:for="{{postDetail.images}}" wx:key="*this">
+              <image 
+                class="detail-image" 
+                src="{{item}}" 
+                mode="widthFix" 
+                bindtap="previewImage" 
+                data-src="{{item}}" 
+                data-urls="{{postDetail.images}}"
+              ></image>
+            </block>
+          </view>
+        </view>
+        
+        <!-- 互动区域 -->
+        <view class="detail-interaction">
+          <view class="detail-interaction-item {{postDetail.isLiked ? 'liked' : ''}}" bindtap="toggleLike">
+            <text class="detail-interaction-icon {{postDetail.isLiked ? 'active' : ''}}">{{postDetail.isLiked ? '❤️' : '🤍'}}</text>
+            <text class="detail-interaction-count">{{postDetail.likes || 0}}</text>
+          </view>
+          <view class="detail-interaction-item" bindtap="focusCommentInput">
+            <text class="detail-interaction-icon">💬</text>
+            <text class="detail-interaction-count">{{postDetail.comments || 0}}</text>
+          </view>
+          <view class="detail-interaction-item {{postDetail.isCollected ? 'collected' : ''}}" bindtap="toggleCollect">
+            <text class="detail-interaction-icon {{postDetail.isCollected ? 'collected' : ''}}">{{postDetail.isCollected ? '⭐' : '☆'}}</text>
+          </view>
+          <button class="detail-share-btn" open-type="share">
+            <text class="detail-interaction-icon">🔗</text>
+          </button>
+        </view>
+      </view>
+      
+      <!-- 评论区 -->
+      <view class="comment-section">
+        <view class="comment-header">
+          <text class="comment-title">评论 ({{postDetail.comments || 0}})</text>
+        </view>
+        
+        <!-- 评论列表 -->
+        <block wx:if="{{commentList.length > 0}}">
+          <comment-item 
+            wx:for="{{commentList}}" 
+            wx:key="_id" 
+            comment="{{item}}" 
+            bind:tapcomment="replyComment"
+          />
+        </block>
+        
+        <!-- 空评论状态 -->
+        <view wx:elif="{{!loadingComments}}" class="empty-comment">
+          <text class="empty-icon">💬</text>
+          <view class="empty-text">暂无评论，快来发表第一条评论吧~</view>
+        </view>
+        
+        <!-- 加载状态 -->
+        <view wx:if="{{loadingComments}}" class="loading-state">
+          <view class="weui-loading"></view>
+          <view class="loading-text">加载中...</view>
+        </view>
+        
+        <!-- 加载完毕提示 -->
+        <view wx:if="{{!hasMoreComments && commentList.length > 0}}" class="loading-end">
+          - 已经到底啦 -
+        </view>
+      </view>
+    </scroll-view>
+    
+    <!-- 评论输入框 -->
+    <view class="comment-input-container">
+      <view class="comment-input-box">
+        <input 
+          class="comment-input" 
+          placeholder="{{replyTo ? '回复 @' + replyTo.author.nickName : '说点什么吧...'}}" 
+          placeholder-class="placeholder" 
+          maxlength="{{commentMaxLength}}" 
+          value="{{commentContent}}" 
+          bindinput="onInputComment"
+          focus="{{commentFocus}}"
+          confirm-type="send"
+          bindconfirm="submitComment"
+        />
+        <view class="comment-counter">{{commentContent.length}}/{{commentMaxLength}}</view>
+      </view>
+      <view class="comment-submit-btn {{!commentContent.trim() || submittingComment ? 'disabled' : ''}}" bindtap="submitComment">发送</view>
+    </view>
+  </block>
+  
+  <!-- 帖子不存在 -->
+  <view class="not-found" wx:else>
+    <text class="not-found-icon">⚠️</text>
+    <view class="not-found-text">帖子不存在或已删除</view>
+    <view class="back-home-btn" bindtap="navigateBack">返回</view>
+  </view>
+</view>

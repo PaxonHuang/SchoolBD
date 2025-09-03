@@ -1,0 +1,77 @@
+<view class="container">
+  <!-- 加载中 -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <view class="loading"></view>
+    <text>加载中...</text>
+  </view>
+
+  <!-- 订单详情 -->
+  <block wx:if="{{!loading && orderInfo}}">
+    <!-- 订单基本信息 -->
+    <view class="order-card">
+      <view class="order-header">
+        <view class="order-title">{{orderInfo.name}}</view>
+        <view class="order-status {{orderInfo.stateColor}}">{{orderInfo.state}}</view>
+      </view>
+      
+      <view class="order-info">
+        <view class="info-item">
+          <text class="label">订单编号：</text>
+          <text class="value">{{orderId}}</text>
+        </view>
+        <view class="info-item">
+          <text class="label">下单时间：</text>
+          <text class="value">{{orderInfo.time}}</text>
+        </view>
+        <view class="info-item">
+          <text class="label">订单金额：</text>
+          <text class="value price">¥{{orderInfo.money}}</text>
+        </view>
+        <view class="info-item">
+          <text class="label">配送地址：</text>
+          <text class="value">{{orderInfo.address}}</text>
+        </view>
+        <view class="info-item">
+          <text class="label">订单详情：</text>
+          <text class="value detail">{{orderInfo.info}}</text>
+        </view>
+      </view>
+      
+      <!-- 操作按钮 -->
+      <view class="action-buttons">
+        <!-- 如果是自己发布的订单且状态为"已帮助"，可以确认完成 -->
+        <button 
+          class="confirm-btn" 
+          wx:if="{{orderInfo._openid === openid && orderInfo.state === '已帮助'}}"
+          bindtap="confirmComplete">确认完成</button>
+          
+        <!-- 如果订单状态为"待帮助"，可以接单 -->
+        <button 
+          class="take-btn" 
+          wx:if="{{orderInfo.state === '待帮助'}}"
+          bindtap="takeOrder">接单</button>
+      </view>
+    </view>
+    
+    <!-- 订单状态历史 -->
+    <view class="status-history">
+      <view class="history-title">订单状态记录</view>
+      <view class="timeline">
+        <view class="timeline-item" wx:for="{{statusHistory}}" wx:key="index">
+          <view class="timeline-dot {{item.newStatus === '已完成' ? 'completed' : item.newStatus === '已帮助' ? 'helping' : 'waiting'}}"></view>
+          <view class="timeline-content">
+            <view class="timeline-time">{{item.createTimeFormat}}</view>
+            <view class="timeline-status">状态变更: {{item.oldStatus}} → {{item.newStatus}}</view>
+            <view class="timeline-remark" wx:if="{{item.remark}}">备注: {{item.remark}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+  
+  <!-- 订单不存在 -->
+  <view class="not-found" wx:if="{{!loading && !orderInfo}}">
+    <icon type="warn" size="64"></icon>
+    <text>订单不存在或已被删除</text>
+  </view>
+</view>

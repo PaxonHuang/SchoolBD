@@ -1,0 +1,22 @@
+<swiper indicator-dots="true" autoplay="true" class="banner_body" current="{{ currentIndex }}"
+previous-margin="50px" next-margin="50px" bindchange="bindchange">
+  <swiper-item wx:for="{{ banner }}" wx:key="index" class="banner_item {{ currentIndex == index ? 'active' : '' }}">
+    <image src="{{ item }}"></image>
+  </swiper-item>
+</swiper>
+
+<view class="notice" bindtap="handleClickNotice">
+  <image src="../../images/notice.png"></image>
+  <text>关注公众号可享订单推送-接单员请务必添加客服v: 18969670186</text>
+</view>
+
+<view class="function-grid">
+  <view class="function-item" wx:for="{{ indexConfig }}" wx:key="index" data-url="{{ item.url }}" bindtap="toDetail">
+    <view class="function-icon-wrapper">
+      <view class="function-icon">
+        <image src="{{ item.icon }}"></image>
+      </view>
+    </view>
+    <text class="function-text">{{ item.text }}</text>
+  </view>
+</view>

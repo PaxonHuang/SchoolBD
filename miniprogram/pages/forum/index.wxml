@@ -1,0 +1,69 @@
+<!-- pages/forum/index.wxml -->
+<view class="forum-container">
+  <!-- 顶部导航栏 -->
+  <view class="forum-header">
+    <view class="forum-title">校园论坛</view>
+    <view class="forum-search" bindtap="navigateToSearch">
+      <text class="search-icon">🔍</text>
+    </view>
+  </view>
+  
+  <!-- 分类标签栏 -->
+  <scroll-view class="category-scroll" scroll-x="true" enhanced="true" show-scrollbar="false">
+    <view class="category-container">
+      <view 
+        wx:for="{{categories}}" 
+        wx:key="id" 
+        class="category-item {{currentCategory === item.id ? 'active' : ''}}" 
+        bindtap="switchCategory" 
+        data-id="{{item.id}}">
+        {{item.name}}
+      </view>
+    </view>
+  </scroll-view>
+  
+  <!-- 帖子列表区域 -->
+  <scroll-view 
+    class="posts-list-container" 
+    scroll-y="true" 
+    enable-back-to-top="true"
+    refresher-enabled="true"
+    refresher-triggered="{{refreshing}}"
+    bindrefresherrefresh="onPullDownRefresh"
+    bindscrolltolower="onReachBottom">
+    
+    <!-- 使用组件渲染帖子列表 -->
+    <block wx:if="{{postsList.length > 0}}">
+      <post-card 
+        wx:for="{{postsList}}" 
+        wx:key="_id" 
+        post="{{item}}" 
+        bind:tapcard="navigateToDetail" 
+        bind:taplike="handleLike" 
+        bind:tapcomment="handleComment"
+      />
+    </block>
+    
+    <!-- 空状态 -->
+    <view wx:if="{{!loading && postsList.length === 0}}" class="empty-state">
+      <text class="empty-icon">📦</text>
+      <view class="empty-text">暂无帖子，快来发布第一条吧~</view>
+    </view>
+    
+    <!-- 加载状态 -->
+    <view wx:if="{{loading && !refreshing}}" class="loading-state">
+      <view class="weui-loading"></view>
+      <view class="loading-text">加载中...</view>
+    </view>
+    
+    <!-- 加载完毕提示 -->
+    <view wx:if="{{!hasMoreData && postsList.length > 0}}" class="loading-end">
+      - 已经到底啦 -
+    </view>
+  </scroll-view>
+  
+  <!-- 悬浮发帖按钮 -->
+  <view class="publish-btn" bindtap="navigateToPublish">
+    <text class="publish-icon">+</text>
+  </view>
+</view>

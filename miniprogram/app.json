@@ -1,0 +1,73 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/forum/index",
+    "pages/order/order",
+    "pages/person/person",
+    "pages/order-detail/order-detail",
+    "pages/post-detail/index",
+    "pages/publish-post/index",
+    "pages/forum-search/index",
+    "pages/aboutAs/aboutAs",
+    "pages/addAddress/addAddress",
+    "pages/address/address",
+    "pages/agreement/agreement",
+    "pages/applyOrder/applyOrder",
+    "pages/expressBusiness/expressBusiness",
+    "pages/expressReplace/expressReplace",
+    "pages/getExpress/getExpress",
+    "pages/helpMeGive/helpMeGive",
+    "pages/lease/lease",
+    "pages/orderReceiver/orderReceiver",
+    "pages/otherHelp/otherHelp",
+    "pages/playGame/playGame",
+    "pages/print/print",
+    "pages/receiveLoading/receiveLoading",
+    "pages/replaceMe/replaceMe",
+    "pages/run/run",
+    "pages/selectBuild/selectBuild",
+    "pages/updateInfo/updateInfo",
+    "pages/sale/index/index",
+    "pages/sale/post/post",
+    "pages/sale/comment/comment"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "校园跑腿",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#3A7BF8",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/index.png",
+        "selectedIconPath": "images/index_fill.png"
+      },
+      {
+        "pagePath": "pages/forum/index",
+        "text": "论坛",
+        "iconPath": "images/image.png",
+        "selectedIconPath": "images/image_fill.png"
+      },
+      {
+        "pagePath": "pages/order/order",
+        "text": "订单",
+        "iconPath": "images/order.png",
+        "selectedIconPath": "images/order_fill.png"
+      },
+      {
+        "pagePath": "pages/person/person",
+        "text": "我的",
+        "iconPath": "images/person.png",
+        "selectedIconPath": "images/person_fill.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
+}

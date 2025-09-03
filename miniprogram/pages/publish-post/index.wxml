@@ -1,0 +1,83 @@
+<!-- pages/publish-post/index.wxml -->
+<view class="publish-container">
+  <!-- 顶部导航栏 -->
+  <view class="publish-header">
+    <view class="cancel-btn" bindtap="cancelPublish">取消</view>
+    <view class="header-title">发布帖子</view>
+    <view class="publish-btn {{!title || !content || submitting ? 'disabled' : ''}}" bindtap="publishPost">发布</view>
+  </view>
+  
+  <!-- 内容编辑区 -->
+  <view class="publish-content">
+    <!-- 标题输入框 -->
+    <view class="title-input-box">
+      <input 
+        class="title-input" 
+        placeholder="请输入标题（最多{{titleMaxLength}}字）" 
+        placeholder-class="placeholder" 
+        maxlength="{{titleMaxLength}}" 
+        value="{{title}}" 
+        bindinput="onInputTitle"
+      />
+      <view class="title-counter">{{title.length}}/{{titleMaxLength}}</view>
+    </view>
+    
+    <!-- 内容输入框 -->
+    <view class="content-input-box">
+      <textarea 
+        class="content-input" 
+        placeholder="请输入内容（最多{{contentMaxLength}}字）" 
+        placeholder-class="placeholder" 
+        maxlength="{{contentMaxLength}}" 
+        value="{{content}}" 
+        bindinput="onInputContent"
+        auto-height
+        show-confirm-bar="{{false}}"
+      />
+      <view class="content-counter">{{content.length}}/{{contentMaxLength}}</view>
+    </view>
+    
+    <!-- 图片上传区 -->
+    <view class="image-upload-box">
+      <view class="image-list">
+        <block wx:for="{{imageList}}" wx:key="*this">
+          <view class="image-item">
+            <image 
+              class="uploaded-image" 
+              src="{{item}}" 
+              mode="aspectFill" 
+              bindtap="previewImage" 
+              data-current="{{item}}"
+            ></image>
+            <view class="delete-btn" bindtap="deleteImage" data-index="{{index}}">
+              <image class="delete-icon" src="/assets/icons/forum/delete.png" mode="aspectFit"></image>
+            </view>
+          </view>
+        </block>
+        
+        <!-- 添加图片按钮 -->
+        <view class="add-image-btn" bindtap="chooseImage" wx:if="{{imageList.length < 9}}">
+          <image class="add-icon" src="/images/add.png" mode="aspectFit"></image>
+          <view class="add-text">添加图片</view>
+        </view>
+      </view>
+      <view class="image-tip">最多上传9张图片</view>
+    </view>
+    
+    <!-- 分类选择区 -->
+    <view class="category-select-box">
+      <view class="category-title">选择分类</view>
+      <view class="category-list">
+        <view 
+          wx:for="{{categories}}" 
+          wx:key="id" 
+          class="category-item {{selectedCategory === item.id ? 'active' : ''}}" 
+          bindtap="onSelectCategory" 
+          data-id="{{item.id}}"
+        >
+          {{item.name}}
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

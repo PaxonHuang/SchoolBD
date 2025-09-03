@@ -1,0 +1,57 @@
+<!-- components/forum/comment-item/index.wxml -->
+<view class="comment-item" bindtap="onTapComment">
+  <!-- 用户头像 -->
+  <image class="comment-avatar" src="{{comment.author.avatarUrl || '/assets/icons/forum/default-avatar.png'}}" mode="aspectFill"></image>
+  
+  <!-- 评论内容区 -->
+  <view class="comment-content">
+    <!-- 用户名和时间 -->
+    <view class="comment-user-info">
+      <view class="comment-user-name">{{comment.author.nickName || '匿名用户'}}</view>
+      <view class="comment-time">{{comment.createTime}}</view>
+    </view>
+    
+    <!-- 回复信息 -->
+    <view class="reply-info" wx:if="{{comment.replyTo}}">
+      <text class="reply-text">回复</text>
+      <text class="reply-name">@{{comment.replyTo.author.nickName || '匿名用户'}}</text>
+    </view>
+    
+    <!-- 评论文字内容 -->
+    <view class="comment-text {{showFull ? 'show-full' : ''}}">
+      {{comment.content}}
+    </view>
+    
+    <!-- 展开/收起按钮 -->
+    <view class="expand-btn" wx:if="{{comment.content.length > 100}}" bindtap="toggleShowFull" catchtap>
+      {{showFull ? '收起' : '展开'}}
+    </view>
+    
+    <!-- 评论图片 -->
+    <view class="comment-images" wx:if="{{comment.images && comment.images.length > 0}}">
+      <block wx:for="{{comment.images}}" wx:key="*this">
+        <image 
+          class="comment-image" 
+          src="{{item}}" 
+          mode="aspectFill" 
+          bindtap="previewImage" 
+          data-src="{{item}}" 
+          data-urls="{{comment.images}}"
+          catchtap
+        ></image>
+      </block>
+    </view>
+    
+    <!-- 评论底部操作区 -->
+    <view class="comment-actions">
+      <view class="comment-like {{comment.isLiked ? 'liked' : ''}}" bindtap="onLikeComment" catchtap>
+        <image class="comment-like-icon" src="{{comment.isLiked ? '/assets/icons/forum/like-active.png' : '/assets/icons/forum/like.png'}}" mode="aspectFit"></image>
+        <text class="comment-like-count" wx:if="{{comment.likes > 0}}">{{comment.likes}}</text>
+      </view>
+      <view class="comment-reply">
+        <image class="comment-reply-icon" src="/assets/icons/forum/reply.png" mode="aspectFit"></image>
+        <text class="comment-reply-text">回复</text>
+      </view>
+    </view>
+  </view>
+</view>

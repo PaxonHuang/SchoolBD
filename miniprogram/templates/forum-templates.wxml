@@ -1,0 +1,108 @@
+<!-- templates/forum-templates.wxml -->
+
+<!-- 帖子卡片模板 -->
+<template name="postCard">
+  <view class="post-card">
+    <!-- 用户信息区 -->
+    <view class="post-user-info">
+      <image class="user-avatar" src="{{author.avatarUrl || '/assets/icons/forum/default-avatar.png'}}" mode="aspectFill"></image>
+      <view class="user-name-time">
+        <view class="user-name">{{author.nickName || '匿名用户'}}</view>
+        <view class="post-time">{{createTime}}</view>
+      </view>
+    </view>
+    
+    <!-- 帖子内容区 -->
+    <view class="post-content">
+      <view class="post-title">{{title}}</view>
+      <view class="post-summary">{{summary}}</view>
+      
+      <!-- 图片区域 -->
+      <view class="post-images" wx:if="{{images && images.length > 0}}">
+        <block wx:if="{{images.length === 1}}">
+          <image class="post-image-single" src="{{images[0]}}" mode="aspectFill"></image>
+        </block>
+        <block wx:elif="{{images.length > 1}}">
+          <view class="post-image-grid">
+            <block wx:for="{{images}}" wx:key="*this" wx:if="{{index < 3}}">
+              <image class="post-image-item" src="{{item}}" mode="aspectFill"></image>
+            </block>
+            <view class="post-image-count" wx:if="{{images.length > 3}}">+{{images.length - 3}}</view>
+          </view>
+        </block>
+      </view>
+    </view>
+    
+    <!-- 互动区域 -->
+    <view class="post-interaction">
+      <view class="interaction-item">
+        <image class="interaction-icon" src="/assets/icons/forum/like.png" mode="aspectFit"></image>
+        <text class="interaction-count">{{likes || 0}}</text>
+      </view>
+      <view class="interaction-item">
+        <image class="interaction-icon" src="/assets/icons/forum/comment.png" mode="aspectFit"></image>
+        <text class="interaction-count">{{comments || 0}}</text>
+      </view>
+      <view class="post-category" wx:if="{{category}}">
+        <text class="category-text">{{categoryName || category}}</text>
+      </view>
+    </view>
+  </view>
+</template>
+
+<!-- 评论项模板 -->
+<template name="commentItem">
+  <view class="comment-item">
+    <image class="comment-avatar" src="{{author.avatarUrl || '/assets/icons/forum/default-avatar.png'}}" mode="aspectFill"></image>
+    <view class="comment-content">
+      <view class="comment-user-name">{{author.nickName || '匿名用户'}}</view>
+      <view class="comment-text">{{content}}</view>
+      <view class="comment-time">{{createTime}}</view>
+    </view>
+  </view>
+</template>
+
+<!-- 帖子详情模板 -->
+<template name="postDetail">
+  <view class="post-detail">
+    <!-- 用户信息区 -->
+    <view class="detail-user-info">
+      <image class="detail-avatar" src="{{author.avatarUrl || '/assets/icons/forum/default-avatar.png'}}" mode="aspectFill"></image>
+      <view class="detail-user-name-time">
+        <view class="detail-user-name">{{author.nickName || '匿名用户'}}</view>
+        <view class="detail-post-time">{{createTime}}</view>
+      </view>
+    </view>
+    
+    <!-- 帖子内容区 -->
+    <view class="detail-content">
+      <view class="detail-title">{{title}}</view>
+      <view class="detail-text">{{content}}</view>
+      
+      <!-- 图片区域 -->
+      <view class="detail-images" wx:if="{{images && images.length > 0}}">
+        <block wx:for="{{images}}" wx:key="*this">
+          <image class="detail-image" src="{{item}}" mode="widthFix" bindtap="previewImage" data-src="{{item}}" data-urls="{{images}}"></image>
+        </block>
+      </view>
+    </view>
+    
+    <!-- 互动区域 -->
+    <view class="detail-interaction">
+      <view class="detail-interaction-item {{isLiked ? 'liked' : ''}}" bindtap="toggleLike">
+        <image class="detail-interaction-icon" src="{{isLiked ? '/assets/icons/forum/like-active.png' : '/assets/icons/forum/like.png'}}" mode="aspectFit"></image>
+        <text class="detail-interaction-count">{{likes || 0}}</text>
+      </view>
+      <view class="detail-interaction-item" bindtap="focusCommentInput">
+        <image class="detail-interaction-icon" src="/assets/icons/forum/comment.png" mode="aspectFit"></image>
+        <text class="detail-interaction-count">{{comments || 0}}</text>
+      </view>
+      <view class="detail-interaction-item" bindtap="toggleCollect">
+        <image class="detail-interaction-icon" src="{{isCollected ? '/assets/icons/forum/collect-active.png' : '/assets/icons/forum/collect.png'}}" mode="aspectFit"></image>
+      </view>
+      <button class="detail-share-btn" open-type="share">
+        <image class="detail-interaction-icon" src="/assets/icons/forum/share.png" mode="aspectFit"></image>
+      </button>
+    </view>
+  </view>
+</template>

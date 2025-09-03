@@ -1,0 +1,63 @@
+<!-- components/forum/post-card/index.wxml -->
+<view class="post-card" bindtap="onTapCard">
+  <!-- 用户信息区 -->
+  <view class="post-user-info">
+    <image class="user-avatar" src="{{post.author.avatarUrl || '/images/default-avatar.png'}}" mode="aspectFill"></image>
+    <view class="user-name-time">
+      <view class="user-name">{{post.author.nickName || '匿名用户'}}</view>
+      <view class="post-time">{{formattedTime}}</view>
+    </view>
+  </view>
+  
+  <!-- 帖子内容区 -->
+  <view class="post-content">
+    <view class="post-title">{{post.title}}</view>
+    <view class="post-summary">{{post.summary || post.content}}</view>
+    
+    <!-- 图片区域 -->
+    <view class="post-images" wx:if="{{post.images && post.images.length > 0}}">
+      <block wx:if="{{post.images.length === 1}}">
+        <image 
+          class="post-image-single" 
+          src="{{post.images[0]}}" 
+          mode="aspectFill" 
+          bindtap="previewImage" 
+          data-src="{{post.images[0]}}" 
+          data-urls="{{post.images}}"
+          catch:tap="previewImage"
+        ></image>
+      </block>
+      <block wx:elif="{{post.images.length > 1}}">
+        <view class="post-image-grid">
+          <block wx:for="{{post.images}}" wx:key="*this" wx:if="{{index < 3}}">
+            <image 
+              class="post-image-item" 
+              src="{{item}}" 
+              mode="aspectFill" 
+              bindtap="previewImage" 
+              data-src="{{item}}" 
+              data-urls="{{post.images}}"
+              catch:tap="previewImage"
+            ></image>
+          </block>
+          <view class="post-image-count" wx:if="{{post.images.length > 3}}">+{{post.images.length - 3}}</view>
+        </view>
+      </block>
+    </view>
+  </view>
+  
+  <!-- 互动区域 -->
+  <view class="post-interaction">
+    <view class="interaction-item" catch:tap="onTapLike">
+      <text class="interaction-icon {{post.isLiked ? 'active' : ''}}">{{post.isLiked ? '❤️' : '🤍'}}</text>
+      <text class="interaction-count {{post.isLiked ? 'active' : ''}}">{{post.likes || 0}}</text>
+    </view>
+    <view class="interaction-item" catch:tap="onTapComment">
+      <text class="interaction-icon">💬</text>
+      <text class="interaction-count">{{post.comments || 0}}</text>
+    </view>
+    <view class="post-category" wx:if="{{post.category}}">
+      <text class="category-text">{{post.categoryName || post.category}}</text>
+    </view>
+  </view>
+</view>

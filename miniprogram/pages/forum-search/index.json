@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "搜索论坛",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "post-card": "/components/forum/post-card/index"
+  }
+}

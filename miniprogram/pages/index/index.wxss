@@ -1,0 +1,231 @@
+
+/* 功能菜单触发按钮 */
+.menu-trigger {
+  position: fixed;
+  right: 30rpx;
+  bottom: 100rpx;
+  width: 120rpx;
+  height: 120rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10rpx 30rpx rgba(102, 126, 234, 0.4);
+  z-index: 999;
+}
+
+.menu-trigger text {
+  font-size: 24rpx;
+  color: #fff;
+  margin-bottom: 5rpx;
+}
+
+.menu-trigger .menu-icon {
+  font-size: 36rpx;
+  color: #fff;
+  font-weight: bold;
+}
+
+/* 抽屉遮罩层 */
+.drawer-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.drawer-mask.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* 抽屉容器 */
+.drawer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70vh;
+  background-color: #fff;
+  border-top-left-radius: 30rpx;
+  border-top-right-radius: 30rpx;
+  z-index: 1001;
+  transform: translateY(100%);
+  transition: transform 0.3s ease-out;
+}
+
+.drawer.show {
+  transform: translateY(0);
+}
+
+/* 抽屉头部 */
+.drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.drawer-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.close-btn {
+  font-size: 50rpx;
+  color: #999;
+  width: 60rpx;
+  height: 60rpx;
+  text-align: center;
+  line-height: 60rpx;
+}
+
+/* 抽屉内容区域 */
+.drawer-content {
+  height: calc(70vh - 120rpx);
+  padding: 20rpx;
+}
+
+.drawer-items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.drawer-item {
+  width: 22%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40rpx;
+  padding: 20rpx 10rpx;
+  border-radius: 15rpx;
+  transition: background-color 0.2s;
+}
+
+.drawer-item:active {
+  background-color: #f5f5f5;
+}
+
+.drawer-item-icon {
+  width: 100rpx;
+  height: 100rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15rpx;
+}
+
+.drawer-item-icon image {
+  width: 60rpx;
+  height: 60rpx;
+}
+
+.drawer-item-text {
+  font-size: 26rpx;
+  color: #333;
+  text-align: center;
+}
+
+
+.banner_body, .banner_item, .banner_item image {
+  height: 350rpx;
+  width: 100%;
+}
+
+/* 轮播图放大样式 */
+.banner_item image {
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+  border-radius: 30px;
+}
+
+.banner_item.active image {
+  transform: scale(1);
+}
+
+.notice {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  padding: 5rpx 15rpx;
+  margin-top: 20rpx;
+}
+.notice image {
+  width: 60rpx;
+  height: 60rpx;
+}
+
+.notice text {
+  font-size: 28rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-left: 30rpx;
+}
+
+.function-grid {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20rpx;
+  background-color: #fff;
+  margin-top: 30rpx;
+  border-radius: 15rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.function-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 25%;
+  margin-bottom: 30rpx;
+}
+
+.function-icon-wrapper {
+  width: 100rpx;
+  height: 100rpx;
+  background: linear-gradient(135deg, #fff 0%, #f7f7f7 100%);
+  border-radius: 25rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  margin-bottom: 12rpx;
+}
+
+.function-icon {
+  width: 80rpx;
+  height: 80rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.function-icon image {
+  width: 48rpx;
+  height: 48rpx;
+}
+
+.function-text {
+  font-size: 24rpx;
+  color: #333;
+  text-align: center;
+  white-space: nowrap;
+}

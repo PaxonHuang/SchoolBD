@@ -1,0 +1,20 @@
+{
+  "path": "e:\\NJTS-Codeprojects-2023\\WechatMiniproject\\Togo_School\\第八版",
+  "desc": "这是一个基于微信小程序云开发的校园服务平台项目，包含论坛、快递代取、打印等多种校园服务功能。",
+  "id": "ee2786c7b8014b6789f40050ec6a598b",
+  "data": {
+    "spaceKey": "ee2786c7b8014b6789f40050ec6a598b",
+    "connections": {
+      "webIDE": "https://ee2786c7b8014b6789f40050ec6a598b.codebuddy.cloudstudio.club",
+      "preview": "https://ee2786c7b8014b6789f40050ec6a598b--{port}.codebuddy.cloudstudio.club",
+      "api": "https://ee2786c7b8014b6789f40050ec6a598b--api.codebuddy.cloudstudio.club",
+      "pty": "https://ee2786c7b8014b6789f40050ec6a598b--pty.codebuddy.cloudstudio.club"
+    }
+  },
+  "config": {
+    "api": "https://ee2786c7b8014b6789f40050ec6a598b--api.codebuddy.cloudstudio.club",
+    "pty": "https://ee2786c7b8014b6789f40050ec6a598b--pty.codebuddy.cloudstudio.club",
+    "region": "ap-shanghai",
+    "spaceKey": "ee2786c7b8014b6789f40050ec6a598b"
+  }
+}

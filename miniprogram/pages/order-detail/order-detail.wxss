@@ -1,0 +1,223 @@
+.container {
+  padding: 30rpx;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+/* 加载中样式 */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400rpx;
+}
+
+.loading {
+  width: 80rpx;
+  height: 80rpx;
+  border: 6rpx solid #f3f3f3;
+  border-top: 6rpx solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20rpx;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 订单卡片样式 */
+.order-card {
+  background-color: #fff;
+  border-radius: 15rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #eee;
+  margin-bottom: 20rpx;
+}
+
+.order-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.order-status {
+  padding: 8rpx 20rpx;
+  border-radius: 30rpx;
+  font-size: 24rpx;
+  color: #fff;
+}
+
+.top_right {
+  background-color: #ff9800;
+}
+
+.top_right_help {
+  background-color: #2196f3;
+}
+
+.top_right_finish {
+  background-color: #4caf50;
+}
+
+/* 订单信息样式 */
+.order-info {
+  margin-bottom: 30rpx;
+}
+
+.info-item {
+  display: flex;
+  margin-bottom: 15rpx;
+  font-size: 28rpx;
+  line-height: 1.5;
+}
+
+.label {
+  color: #666;
+  width: 160rpx;
+  flex-shrink: 0;
+}
+
+.value {
+  color: #333;
+  flex: 1;
+}
+
+.price {
+  color: #f44336;
+  font-weight: bold;
+}
+
+.detail {
+  word-break: break-all;
+}
+
+/* 操作按钮样式 */
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 30rpx;
+}
+
+.confirm-btn, .take-btn {
+  padding: 15rpx 40rpx;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  margin-left: 20rpx;
+}
+
+.confirm-btn {
+  background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+  color: #fff;
+}
+
+.take-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+}
+
+/* 订单状态历史样式 */
+.status-history {
+  background-color: #fff;
+  border-radius: 15rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.history-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 30rpx;
+}
+
+.timeline {
+  position: relative;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 10rpx;
+  top: 0;
+  width: 2rpx;
+  height: 100%;
+  background-color: #ddd;
+}
+
+.timeline-item {
+  position: relative;
+  padding-left: 50rpx;
+  margin-bottom: 40rpx;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: 0;
+  top: 10rpx;
+  width: 20rpx;
+  height: 20rpx;
+  border-radius: 50%;
+  background-color: #ddd;
+}
+
+.timeline-dot.waiting {
+  background-color: #ff9800;
+}
+
+.timeline-dot.helping {
+  background-color: #2196f3;
+}
+
+.timeline-dot.completed {
+  background-color: #4caf50;
+}
+
+.timeline-content {
+  background-color: #f9f9f9;
+  padding: 20rpx;
+  border-radius: 10rpx;
+}
+
+.timeline-time {
+  font-size: 24rpx;
+  color: #999;
+  margin-bottom: 10rpx;
+}
+
+.timeline-status {
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 10rpx;
+}
+
+.timeline-remark {
+  font-size: 26rpx;
+  color: #666;
+}
+
+/* 订单不存在样式 */
+.not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400rpx;
+}
+
+.not-found text {
+  margin-top: 30rpx;
+  color: #999;
+  font-size: 30rpx;
+}

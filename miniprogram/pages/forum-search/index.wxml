@@ -1,0 +1,111 @@
+<!-- pages/forum-search/index.wxml -->
+<view class="search-container">
+  <!-- 顶部搜索栏 -->
+  <view class="search-header">
+    <view class="search-back" bindtap="navigateBack">
+      <image class="back-icon" src="/assets/icons/forum/back.png" mode="aspectFit"></image>
+    </view>
+    <view class="search-input-wrapper">
+      <input 
+        class="search-input" 
+        type="text" 
+        placeholder="搜索论坛内容" 
+        value="{{keyword}}" 
+        bindinput="onInputKeyword"
+        bindconfirm="onSearchTap"
+        focus="{{inputFocus}}"
+        confirm-type="search"
+      />
+      <view class="search-btn" bindtap="onSearchTap">
+        <image class="search-icon" src="/assets/icons/forum/search.png" mode="aspectFit"></image>
+      </view>
+    </view>
+  </view>
+
+  <!-- 搜索建议区域 -->
+  <view wx:if="{{!showResults}}" class="search-suggestions">
+    <!-- 热门搜索 -->
+    <view class="suggestion-section">
+      <view class="section-title">热门搜索</view>
+      <view class="keyword-list">
+        <view 
+          wx:for="{{hotKeywords}}" 
+          wx:key="*this" 
+          class="keyword-item hot-keyword" 
+          bindtap="onKeywordTap" 
+          data-keyword="{{item}}">
+          {{item}}
+        </view>
+      </view>
+    </view>
+
+    <!-- 搜索历史 -->
+    <view wx:if="{{searchHistory.length > 0}}" class="suggestion-section">
+      <view class="section-header">
+        <view class="section-title">搜索历史</view>
+        <view class="clear-history" bindtap="clearSearchHistory">
+          <image class="clear-icon" src="/assets/icons/forum/clear.png" mode="aspectFit"></image>
+        </view>
+      </view>
+      <view class="keyword-list">
+        <view 
+          wx:for="{{searchHistory}}" 
+          wx:key="*this" 
+          class="keyword-item history-keyword" 
+          bindtap="onKeywordTap" 
+          data-keyword="{{item}}">
+          <image class="history-icon" src="/assets/icons/forum/history.png" mode="aspectFit"></image>
+          <text class="keyword-text">{{item}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 搜索结果区域 -->
+  <view wx:if="{{showResults}}" class="search-results">
+    <!-- 搜索中状态 -->
+    <view wx:if="{{searching}}" class="searching-state">
+      <view class="weui-loading"></view>
+      <view class="searching-text">搜索中...</view>
+    </view>
+
+    <!-- 搜索结果列表 -->
+    <scroll-view 
+      wx:if="{{!searching}}"
+      class="results-list" 
+      scroll-y="true" 
+      enable-back-to-top="true"
+      bindscrolltolower="onReachBottom">
+      
+      <!-- 使用组件渲染搜索结果 -->
+      <block wx:if="{{searchResults.length > 0}}">
+        <post-card 
+          wx:for="{{searchResults}}" 
+          wx:key="_id" 
+          post="{{item}}" 
+          bind:tapcard="navigateToDetail" 
+          bind:taplike="handleLike" 
+          bind:tapcomment="handleComment"
+        />
+      </block>
+      
+      <!-- 空状态 -->
+      <view wx:if="{{!loading && searchResults.length === 0}}" class="empty-state">
+        <image class="empty-icon" src="/assets/icons/forum/empty-search.png" mode="aspectFit"></image>
+        <view class="empty-text">没有找到相关内容</view>
+        <view class="empty-tip">试试其他关键词吧</view>
+      </view>
+      
+      <!-- 加载状态 -->
+      <view wx:if="{{loading}}" class="loading-state">
+        <view class="weui-loading"></view>
+        <view class="loading-text">加载中...</view>
+      </view>
+      
+      <!-- 加载完毕提示 -->
+      <view wx:if="{{!hasMoreData && searchResults.length > 0}}" class="loading-end">
+        - 已经到底啦 -
+      </view>
+    </scroll-view>
+  </view>
+</view>

@@ -1,0 +1,132 @@
+/* components/forum/comment-item/index.wxss */
+
+.comment-item {
+  display: flex;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #EEEEEE;
+}
+
+.comment-avatar {
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+
+.comment-content {
+  flex: 1;
+}
+
+.comment-user-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10rpx;
+}
+
+.comment-user-name {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333333;
+  margin-right: 20rpx;
+}
+
+.comment-time {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+.reply-info {
+  display: flex;
+  margin-bottom: 10rpx;
+}
+
+.reply-text {
+  font-size: 26rpx;
+  color: #999999;
+  margin-right: 10rpx;
+}
+
+.reply-name {
+  font-size: 26rpx;
+  color: #3A7BF8;
+}
+
+.comment-text {
+  font-size: 28rpx;
+  color: #333333;
+  line-height: 1.6;
+  word-break: break-all;
+  max-height: 120rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.comment-text.show-full {
+  max-height: none;
+  -webkit-line-clamp: unset;
+}
+
+.expand-btn {
+  font-size: 26rpx;
+  color: #3A7BF8;
+  margin-top: 10rpx;
+}
+
+.comment-images {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 10rpx -5rpx;
+}
+
+.comment-image {
+  width: 160rpx;
+  height: 160rpx;
+  margin: 5rpx;
+  border-radius: 8rpx;
+}
+
+.comment-actions {
+  display: flex;
+  margin-top: 16rpx;
+}
+
+.comment-like {
+  display: flex;
+  align-items: center;
+  margin-right: 30rpx;
+}
+
+.comment-like-icon {
+  width: 32rpx;
+  height: 32rpx;
+  margin-right: 8rpx;
+}
+
+.comment-like-count {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+.comment-like.liked .comment-like-count {
+  color: #3A7BF8;
+}
+
+.comment-reply {
+  display: flex;
+  align-items: center;
+}
+
+.comment-reply-icon {
+  width: 32rpx;
+  height: 32rpx;
+  margin-right: 8rpx;
+}
+
+.comment-reply-text {
+  font-size: 24rpx;
+  color: #999999;
+}

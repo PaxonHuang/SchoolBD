@@ -1,0 +1,6 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "comment-item": "/components/forum/comment-item/index"
+  }
+}

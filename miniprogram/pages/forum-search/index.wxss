@@ -1,0 +1,223 @@
+/* pages/forum-search/index.wxss */
+.search-container {
+  height: 100vh;
+  background-color: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 搜索头部 */
+.search-header {
+  background-color: #fff;
+  padding: 20rpx;
+  padding-top: calc(env(safe-area-inset-top, 44rpx) + 20rpx);
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.search-back {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+}
+
+.back-icon {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.search-input-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background-color: #f8f8f8;
+  border-radius: 50rpx;
+  padding: 0 20rpx;
+  height: 80rpx;
+}
+
+.search-input {
+  flex: 1;
+  height: 100%;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.search-btn {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-icon {
+  width: 32rpx;
+  height: 32rpx;
+}
+
+/* 搜索建议区域 */
+.search-suggestions {
+  flex: 1;
+  padding: 40rpx 30rpx;
+}
+
+.suggestion-section {
+  margin-bottom: 50rpx;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.clear-history {
+  padding: 10rpx;
+}
+
+.clear-icon {
+  width: 32rpx;
+  height: 32rpx;
+}
+
+.keyword-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+
+.keyword-item {
+  padding: 16rpx 24rpx;
+  border-radius: 50rpx;
+  font-size: 26rpx;
+  color: #666;
+  display: flex;
+  align-items: center;
+}
+
+.hot-keyword {
+  background-color: #fff;
+  border: 2rpx solid #e0e0e0;
+}
+
+.history-keyword {
+  background-color: #f8f8f8;
+  border: 2rpx solid transparent;
+}
+
+.history-icon {
+  width: 24rpx;
+  height: 24rpx;
+  margin-right: 10rpx;
+}
+
+.keyword-text {
+  max-width: 200rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 搜索结果区域 */
+.search-results {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.searching-state {
+  padding: 100rpx 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.searching-text {
+  margin-top: 20rpx;
+  font-size: 28rpx;
+  color: #999;
+}
+
+.results-list {
+  flex: 1;
+  padding: 20rpx;
+}
+
+/* 空状态 */
+.empty-state {
+  text-align: center;
+  padding: 100rpx 0;
+  color: #999;
+}
+
+.empty-icon {
+  width: 120rpx;
+  height: 120rpx;
+  margin-bottom: 30rpx;
+}
+
+.empty-text {
+  font-size: 32rpx;
+  margin-bottom: 10rpx;
+}
+
+.empty-tip {
+  font-size: 26rpx;
+}
+
+/* 加载状态 */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40rpx 0;
+}
+
+.loading-text {
+  margin-top: 20rpx;
+  font-size: 26rpx;
+  color: #999;
+}
+
+.loading-end {
+  text-align: center;
+  padding: 40rpx 0;
+  font-size: 26rpx;
+  color: #ccc;
+}
+
+/* 微信内置loading样式 */
+.weui-loading {
+  margin: 0 5rpx;
+  width: 40rpx;
+  height: 40rpx;
+  display: inline-block;
+  animation: weui-loading 1s steps(12, end) infinite;
+  background: transparent url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 100 100"><path fill="none" d="M0 0h100v100H0z"/><rect width="7" height="20" x="46.5" y="40" fill="%23E9E9E9" rx="5" ry="5" transform="translate(0 -30)"/><rect width="7" height="20" x="46.5" y="40" fill="%23989697" rx="5" ry="5" transform="rotate(30 105.98 65)"/><rect width="7" height="20" x="46.5" y="40" fill="%239B999A" rx="5" ry="5" transform="rotate(60 75.98 65)"/><rect width="7" height="20" x="46.5" y="40" fill="%23A3A1A2" rx="5" ry="5" transform="rotate(90 65 65)"/><rect width="7" height="20" x="46.5" y="40" fill="%23ABA9AA" rx="5" ry="5" transform="rotate(120 58.66 65)"/><rect width="7" height="20" x="46.5" y="40" fill="%23B2B2B2" rx="5" ry="5" transform="rotate(150 54.02 65)"/><rect width="7" height="20" x="46.5" y="40" fill="%23BAB8B9" rx="5" ry="5" transform="rotate(180 50 65)"/><rect width="7" height="20" x="46.5" y="40" fill="%23C2C0C1" rx="5" ry="5" transform="rotate(-150 45.98 65)"/><rect width="7" height="20" x="46.5" y="40" fill="%23CBCBCB" rx="5" ry="5" transform="rotate(-120 41.34 65)"/><rect width="7" height="20" x="46.5" y="40" fill="%23D2D2D2" rx="5" ry="5" transform="rotate(-90 35 65)"/><rect width="7" height="20" x="46.5" y="40" fill="%23DADADA" rx="5" ry="5" transform="rotate(-60 24.02 65)"/><rect width="7" height="20" x="46.5" y="40" fill="%23E2E2E2" rx="5" ry="5" transform="rotate(-30 -5.98 65)"/></svg>') no-repeat;
+  background-size: 100%;
+}
+
+@keyframes weui-loading {
+  0% {
+    transform: rotate3d(0, 0, 1, 0deg);
+  }
+  100% {
+    transform: rotate3d(0, 0, 1, 360deg);
+  }
+}

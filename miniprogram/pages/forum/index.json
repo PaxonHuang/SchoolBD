@@ -1,0 +1,9 @@
+{
+  "navigationStyle": "custom",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark",
+  "usingComponents": {
+    "post-card": "/components/forum/post-card/index",
+    "comment-item": "/components/forum/comment-item/index"
+  }
+}

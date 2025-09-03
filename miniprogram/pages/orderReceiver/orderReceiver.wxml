@@ -1,0 +1,15 @@
+<view class="container">
+  <view wx:for="{{receiveList}}" wx:key="_id" class="item">
+    <view class="info">
+      <text>申请人：{{item.name}}</text>
+      <text>证件号：{{item.userID}}</text>
+      <text>申请时间：{{item.time}}</text>
+      <image src="{{item.userIDImg}}" mode="aspectFit" class="id-img"></image>
+    </view>
+    <view class="actions">
+      <button bindtap="toExamine" data-item="{{item}}" data-name="通过" class="approve">通过</button>
+      <button bindtap="toExamine" data-item="{{item}}" data-name="不通过" class="reject">拒绝</button>
+    </view>
+  </view>
+  <view wx:if="{{!receiveList.length}}" class="empty">暂无待审核申请</view>
+</view>
